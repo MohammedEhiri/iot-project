@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Liste des températures</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+<h1>Liste des températures</h1>
+<table>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Valeur</th>
+        <th>Timestamp</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="temperature : ${temperatures}">
+        <td th:text="${temperature.id}"></td>
+        <td th:text="${temperature.value}"></td>
+        <td th:text="${#temporals.format(temperature.timestamp, 'yyyy-MM-dd HH:mm:ss')}"></td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>

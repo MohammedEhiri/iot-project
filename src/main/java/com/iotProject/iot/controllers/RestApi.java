@@ -4,12 +4,13 @@ import com.iotProject.iot.Repositories.CapteurDataRepo;
 import com.iotProject.iot.Services.TemperatureService;
 import com.iotProject.iot.models.CapteurData;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-@RestController
+@Controller
 public class RestApi {
 
     @Autowired
@@ -19,6 +20,13 @@ public class RestApi {
     @GetMapping
     public List<CapteurData> getAllTemperatures() {
         return temperatureService.getAllTemperatures();
+    }
+
+    @GetMapping("/temperatures")
+    public String showTemperatureList(Model model) {
+        List<CapteurData> temperatures = temperatureService.getAllTemperatures();
+        model.addAttribute("temperatures", temperatures);
+        return "affichage";
     }
 
 
