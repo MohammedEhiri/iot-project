@@ -4,6 +4,7 @@ package com.iotProject.iot.models;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 
@@ -17,6 +18,6 @@ public class CapteurData {
     private Long id;
     private double temperature;
     private double humidity;
-    private Date datetime;
+    private LocalDateTime dateTime;
 
 }

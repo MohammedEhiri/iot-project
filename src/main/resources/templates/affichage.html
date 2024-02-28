@@ -1,37 +1,45 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <title>Liste des températures</title>
-    <style>
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        th, td {
-            border: 1px solid black;
-            padding: 8px;
-            text-align: left;
-        }
-    </style>
+    <title>Real-time Chart with API Data</title>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 </head>
 <body>
-<h1>Liste des températures</h1>
-<table>
-    <thead>
-    <tr>
-        <th>ID</th>
-        <th>Valeur</th>
-        <th>Timestamp</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="temperature : ${temperatures}">
-        <td th:text="${temperature.id}"></td>
-        <td th:text="${temperature.value}"></td>
-        <td th:text="${#temporals.format(temperature.timestamp, 'yyyy-MM-dd HH:mm:ss')}"></td>
-    </tr>
-    </tbody>
-</table>
+<div id="chart"></div>
+<script>
+    var trace1 = {
+        x: [],
+        y: [],
+        type: 'scatter',
+        mode: 'lines',
+        name: 'Real-time Data'
+    };
+
+    var data = [trace1];
+
+    var layout = {
+        title: 'Real-time Chart with API Data',
+        xaxis: {
+            title: 'Time'
+        },
+        yaxis: {
+            title: 'Value'
+        }
+    };
+
+    Plotly.newPlot('chart', data, layout);
+
+    setInterval(function() {
+        fetch('/api/current-temperature')
+            .then(response => response.json())
+            .then(data => {
+                var x = new Date().getTime();
+                var y = data;
+                trace1.x.push(x);
+                trace1.y.push(y);
+                Plotly.relayout('chart', {data: data});
+            });
+    }, 1000);
+</script>
 </body>
 </html>
