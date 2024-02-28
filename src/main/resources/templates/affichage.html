@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Real-time Chart with API Data</title>
+    <title>Projet Iot</title>
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 </head>
 <body>
@@ -12,31 +12,55 @@
         y: [],
         type: 'scatter',
         mode: 'lines',
-        name: 'Real-time Data'
+        name: 'Current Temperature'
     };
 
-    var data = [trace1];
+    var trace2 = {
+        x: [],
+        y: [],
+        type: 'scatter',
+        mode: 'lines',
+        name: 'Last Humidity'
+    };
+
+    var data = [trace1, trace2];
 
     var layout = {
-        title: 'Real-time Chart with API Data',
+        title: 'Température Actuelle et Humidité',
         xaxis: {
-            title: 'Time'
+            title: 'Temps',
+            tickformat: '%d-%m-%Y %H:%M'
         },
         yaxis: {
-            title: 'Value'
+            title: 'Valeur',
+            range: [0, 100]
+        },
+        margin: {
+            l: 50,
+            r: 50,
+            b: 50,
+            t: 50
+        },
+        paper_bgcolor: '#f0f0f0',
+        plot_bgcolor: '#f0f0f0',
+        font: {
+            color: '#000000'
         }
     };
 
     Plotly.newPlot('chart', data, layout);
 
     setInterval(function() {
-        fetch('/api/current-temperature')
+        fetch('/api/temperature-data')
             .then(response => response.json())
             .then(data => {
                 var x = new Date().getTime();
-                var y = data;
+                var temp = data[0][0];
+                var humidity = data[0][1];
                 trace1.x.push(x);
-                trace1.y.push(y);
+                trace1.y.push(temp);
+                trace2.x.push(x);
+                trace2.y.push(humidity);
                 Plotly.relayout('chart', {data: data});
             });
     }, 1000);

@@ -18,10 +18,21 @@ public class TemperatureService {
         // Récupérer la dernière entrée de données du capteur
         List<CapteurData> capteurDataList = capteurDataRepository.findAllByOrderByDateTime();
         if (!capteurDataList.isEmpty()) {
-            return capteurDataList.get(0).getTemperature();
+            return capteurDataList.get(capteurDataList.size() - 1).getTemperature();
         } else {
             // Si aucune donnée n'est disponible, renvoyer une valeur par défaut
             return -1; // Valeur par défaut, à gérer en conséquence
+        }
+    }
+
+    public double getLastHumidity() {
+        // Récupérer la dernière entrée de données du capteur
+        List<CapteurData> capteurDataList = capteurDataRepository.findAllByOrderByDateTime();
+        if (!capteurDataList.isEmpty()) {
+            return capteurDataList.get(capteurDataList.size() - 1).getHumidity();
+        } else {
+
+            return -1;
         }
     }
 }
