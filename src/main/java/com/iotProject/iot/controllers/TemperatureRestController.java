@@ -6,8 +6,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.mail.*;
+import javax.mail.internet.AddressException;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 
 @RestController
 @RequestMapping("/api")
@@ -33,6 +38,9 @@ public class TemperatureRestController {
         data.add(this.getCurrentTemperature());
         data.add(this.getLastHumidity());
         temperatureData.add(data);
+        double currentTemperature = temperatureService.getCurrentTemperature();
+
         return temperatureData;
     }
+
 }
